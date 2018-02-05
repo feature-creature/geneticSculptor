@@ -13,7 +13,7 @@ class Tree {
         void draw(int x, int y);
         float getFitness ();
         Tree crossover(Tree partner);
-    void branch(float b_length, float theta);
+    void branch(float b_length, float theta, float b_width);
     
         void mutate(float mutationRate);
 
@@ -31,5 +31,15 @@ class Tree {
         float startAngle;
         float seed = 0;
         int count = 0;
+
+        int startWidth;
+        float erosionFactor;
+        int leafSize;
+        float leafColorR;
+        float leafColorG;
+        float leafColorB;
+        float leafColorA;
+        int leafShape;
+
 //    void print();
 };

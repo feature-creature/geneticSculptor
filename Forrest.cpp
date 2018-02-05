@@ -11,7 +11,7 @@ void Forrest::setup(float m, int num)
 
     for (int x=0; x<num; x++){
         Tree tempTree;
-        tempTree.setup(8);
+        tempTree.setup(16);
         trees.push_back(tempTree);
     }
 }
