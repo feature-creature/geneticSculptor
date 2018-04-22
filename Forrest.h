@@ -13,6 +13,6 @@ class Forrest{
     void pick(int n);
 
     float mutationRate;            // Mutation rate
-    vector<Tree> trees; // Vector to hold the current population
-    vector<Tree> matingPool; // Vector which we will use for our "mating pool"
+    vector<Tree> trees; // Vector for the current population
+    vector<Tree> matingPool; // Vector for the "mating pool" population
 };
