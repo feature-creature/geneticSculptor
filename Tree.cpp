@@ -1,29 +1,47 @@
 #include "Tree.h"
 #define GENE_SIZE 1
+
 //-------------------------------------------------------
+// accessible variables
 Tree::Tree(){
+
     geneSize = GENE_SIZE;
     fitness = 0;
 }
+
 //-------------------------------------------------------
+// two functions can have the same name 
+// but different inputs and behavior.
+// these achieve the same goal
+//-------------------------------------------------------
+
+//-------------------------------------------------------
+// setup via existing DNA
 void Tree::setup(DNA _dna){
+    // use existing DNA for this tree
     dna = _dna;
     geneSize = dna.geneSize;
     numOfGenes = dna.numOfGenes;
+    // specific to this tree 
     calcPhenotype();
 }
+
 //-------------------------------------------------------
-void Tree::setup(int _numOfGenes)
-{
+// setup via creating DNA 
+void Tree::setup(int _numOfGenes){
+    // create new DNA for this tree 
     numOfGenes = _numOfGenes;
     dna.setup(numOfGenes, geneSize);
+    // specific to this tree 
     calcPhenotype();
 }
+
 //-------------------------------------------------------
-// This function turns the floats into a tree
+// decode the normalized genotype data into 
+// phenotype data scaled to different ranges for visuals
 void Tree::calcPhenotype(){
-        //decode the genes into variables for drawing
-        branchOffset = ofMap(dna.genes[0],0,1,0,1);
+
+        branchOffset = ofMap(dna.genes[0],0,1,0,4);
         startTheta = ofMap(dna.genes[1],0,1, 0, 30);
         startLength = ofMap(dna.genes[2],0,1, 20, 100);
         minLength = ofMap(dna.genes[3],0,1, 3, 10);
@@ -39,17 +57,20 @@ void Tree::calcPhenotype(){
         leafColorB = ofMap(dna.genes[13],0,1,0,255);
         leafColorA = ofMap(dna.genes[14],0,1,25,100);
         leafShape = ofMap(dna.genes[15],0,1,3,5);
+
+        // ?? what is this for
         seed = ofRandom(1000,65000);
+
 }
-void Tree::branch(float b_length, float theta, float b_width)
-{
-    if(count > 500)
-    {
-        cout << "max branches reached" << endl;
-    }
+
+//-------------------------------------------------------
+void Tree::branch(float b_length, float theta, float b_width){
+    // limit number of branches
+    if(count > 500) cout << "max branches reached" << endl;
     
-    if(b_length > minLength )
-    {
+    // branches
+    if(b_length > minLength ){
+
         ofSetColor(0);
         ofSetLineWidth(b_width);
         ofDrawLine(0,0,0,-b_length);
@@ -65,13 +86,14 @@ void Tree::branch(float b_length, float theta, float b_width)
         ofRotate(-theta - (ofNoise(ofGetFrameNum()/thetaVariance, ofGetFrameNum()/b_length)));
         branch(b_length * (branchReduce + ofRandom(-reduceVariance, reduceVariance)), theta, b_width * erosionFactor);
         ofPopMatrix();
-    }
-    else{
-        // leaves
-        for(int i = 0; i < 20; i++)
-        {
-            ofSetColor(leafColorR,leafColorG,leafColorB,leafColorA);
-            //ofSetColor(leafColorB,leafColorA);
+
+    // leaves
+    }else{
+
+        for(int i = 0; i < 20; i++){
+
+            //ofSetColor(leafColorR,leafColorG,leafColorB,leafColorA);
+            ofSetColor(leafColorB,leafColorA);
             ofDrawEllipse(ofRandom(-4,4),ofRandom(-4,4),leafSize,leafSize);
         }
     }
@@ -79,7 +101,7 @@ void Tree::branch(float b_length, float theta, float b_width)
 }
 
 //--------------------------------------------------------
-// Draws the tree
+// Draw the tree
 void Tree::draw(int x, int y){
     ofSeedRandom(seed);
     count = 0;
@@ -88,8 +110,8 @@ void Tree::draw(int x, int y){
     branch(startLength, startTheta,startWidth);
     ofPopMatrix();
 }
+
 ////--------------------------------------------------------
-//// Draws the tree
 //void Tree::print(){
 //    cout << branchOffset << endl;
 //    cout <<     startTheta << endl;

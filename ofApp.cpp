@@ -30,15 +30,16 @@ void ofApp::displayInfo(){
 
 //--------------------------------------------------------------
 void ofApp::keyPressed(int key){
+    
+    // keys 0-7
+    if (key>=47 || key <=56) {
+        forrest.pick(ofToInt(ofToString(char(key))));
+    }
 
     // init generation
     if (key == 'g' || key == 'G') {
         forrest.selection();
         forrest.generate();
-    }
-    // keys 0-7
-    else if (key>=47 || key <=56) {
-        forrest.pick(ofToInt(ofToString(char(key))));
     }
 
 }

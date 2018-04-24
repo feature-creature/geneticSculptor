@@ -18,7 +18,7 @@ void Forrest::setup(float m, int num)
     for (int x=0; x<num; x++){
         // initialize a tree object 
         Tree tempTree;
-        // ?? set it up with DNA
+        // gene (not DNA) version of setup function
         tempTree.setup(16);
         // store the new tree in the tree vector
         // ?? not pointers etc
@@ -55,7 +55,7 @@ void Forrest::selection() {
         float fitnessNormal = ofMap(trees[i].fitness, 0, maxFitness, 0, 1);
         // normalize fitness values on 0-100 scale
         int n = (int) (fitnessNormal * 100);
-        // if non-zero add individual n times into mating pool
+        // if the individual has a non-zero n value, add individual n times into mating pool
         for (int j = 0; j < n; j++) {
             matingPool.push_back(trees[i]);
         }
@@ -65,7 +65,7 @@ void Forrest::selection() {
 }
 
 //------------------------------------------------------------
-// display a new generation
+// display the current generation of the forrest
 // draw each tree
 void Forrest::draw(){
     for(int i =0; i < trees.size(); i++)
@@ -75,13 +75,14 @@ void Forrest::draw(){
         ofSetColor(0);
         // tree's fitness value
         ofDrawBitmapString(ofToString(i) + ":" + ofToString(trees[i].fitness), -10, 20);
-        // to correctly position the next tree, translate 1/num of trees distance to the right in the window 
+        // to correctly position the next tree in the window, translate 1/num of trees distance to the right 
         ofTranslate(ofGetWidth()/trees.size(), 0);
     }
 }
 
 //------------------------------------------------------------
-// Create a new generation
+// Create a new generation of trees and
+// fill the tree vector with them 
 void Forrest::generate() {
 
     for (int i = 0; i < trees.size(); i++) {
@@ -97,9 +98,11 @@ void Forrest::generate() {
       // create a temporary local DNA object with the temporary local genotype data
       DNA childDNA = partnerA.dna.crossover(partnerB.dna);
 
-      // ?? why is this necessary
-      // turns the currently stored tree's geneotype data into a visual phenotype representation
-      trees[i].calcPhenotype();
+      // ?? why is this necessary (here)
+      // decodes the currently stored tree's geneotype data into
+      // variables for visual phenotype representation
+      // !!works without it
+      //trees[i].calcPhenotype();
       
       // mutate the child dna for child variability
       childDNA.mutate(mutationRate);
@@ -113,8 +116,8 @@ void Forrest::generate() {
       // by storing this local temporary tree in its place
       trees[i] = child;
       
-      // ?? why is this necessary
-      // turns newly stored tree's geneotype data into a visual phenotype representation
+      // decodes the newly stored tree's geneotype data into
+      // variables for visual phenotype representation
       trees[i].calcPhenotype();
     }
 }
